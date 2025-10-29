@@ -1,0 +1,120 @@
+class StudentResultAnalyzer:
+    def __init__(self):
+        self.students = {}
+        self.subjects = ['Maths', 'Science', 'English', 'Hindi', 'Social Science']
+
+    def add_student(self):
+        student_name = input("Enter student name: ")
+        marks = []
+        for subject in self.subjects:
+            while True:
+                try:
+                    mark = int(input(f"Enter {subject} marks (0-100): "))
+                    if 0 <= mark <= 100:
+                        marks.append(mark)
+                        break
+                    else:
+                        print("Invalid marks. Please enter marks between 0 and 100.")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+        self.students[student_name] = marks
+        print(f"Student {student_name} added successfully!")
+
+    def calculate_result(self, marks):
+        total = sum(marks)
+        percentage = total / len(marks)
+        grade = self.calculate_grade(percentage)
+        return total, percentage, grade
+
+    def calculate_grade(self, percentage):
+        if percentage >= 90:
+            return 'A'
+        elif percentage >= 80:
+            return 'B'
+        elif percentage >= 70:
+            return 'C'
+        elif percentage >= 60:
+            return 'D'
+        else:
+            return 'F'
+
+    def display_result(self, student_name):
+        if student_name in self.students:
+            marks = self.students[student_name]
+            total, percentage, grade = self.calculate_result(marks)
+            print(f"Student Name: {student_name}")
+            for i, subject in enumerate(self.subjects):
+                print(f"{subject}: {marks[i]}")
+            print(f"Total Marks: {total}")
+            print(f"Percentage: {percentage:.2f}%")
+            print(f"Grade: {grade}")
+        else:
+            print("Student not found!")
+
+    def update_marks(self, student_name):
+        if student_name in self.students:
+            marks = []
+            for subject in self.subjects:
+                while True:
+                    try:
+                        mark = int(input(f"Enter {subject} marks (0-100): "))
+                        if 0 <= mark <= 100:
+                            marks.append(mark)
+                            break
+                        else:
+                            print("Invalid marks. Please enter marks between 0 and 100.")
+                    except ValueError:
+                        print("Invalid input. Please enter a number.")
+            self.students[student_name] = marks
+            print(f"Marks updated successfully for {student_name}!")
+        else:
+            print("Student not found!")
+
+    def delete_student(self, student_name):
+        if student_name in self.students:
+            del self.students[student_name]
+            print(f"Student {student_name} deleted successfully!")
+        else:
+            print("Student not found!")
+
+    def display_all_students(self):
+        for student_name, marks in self.students.items():
+            total, percentage, grade = self.calculate_result(marks)
+            print(f"Student Name: {student_name}")
+            for i, subject in enumerate(self.subjects):
+                print(f"{subject}: {marks[i]}")
+            print(f"Total Marks: {total}")
+            print(f"Percentage: {percentage:.2f}%")
+            print(f"Grade: {grade}")
+            print("------------------------")
+
+def main():
+    analyzer = StudentResultAnalyzer()
+    while True:
+        print("1. Add Student")
+        print("2. Display Result")
+        print("3. Update Marks")
+        print("4. Delete Student")
+        print("5. Display All Students")
+        print("6. Exit")
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            analyzer.add_student()
+        elif choice == '2':
+            student_name = input("Enter student name: ")
+            analyzer.display_result(student_name)
+        elif choice == '3':
+            student_name = input("Enter student name: ")
+            analyzer.update_marks(student_name)
+        elif choice == '4':
+            student_name = input("Enter student name: ")
+            analyzer.delete_student(student_name)
+        elif choice == '5':
+            analyzer.display_all_students()
+        elif choice == '6':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
